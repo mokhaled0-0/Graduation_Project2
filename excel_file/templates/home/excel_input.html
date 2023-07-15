@@ -1,0 +1,269 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Excel Analysis</title>
+        <link rel="icon" href="{% static 'images/logo1.webp' %}">
+  </head>
+  <link rel="stylesheet" href="{% static 'home/css/exc.css' %}" />
+      <link
+    href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap"
+    rel="stylesheet" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <style>
+    .steps div {
+      width: 100%;
+      height: 8px;
+      background: aliceblue;
+      position: relative;
+    }
+  </style>
+  <section class="navbar custom-navbar navbar-fixed-top" role="navigation">
+    <div class="header" style="height: 100px">
+      <div class="navbar-header">
+        <!-- lOGO TEXT HERE -->
+        <a
+          href="http://localhost/grad/finally2/home/vip/templates/home/main.html"
+          style="margin-left: 25px"
+          ><img
+            src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/803/7812452803_7009b2ac-d992-4261-ad53-0a0bd9a49453.png?cb=1664135372"
+            alt=""
+        /></a>
+      </div>
+      <div class="nav-links" id="navLinks" style="margin-top: -170px">
+        <ul style="text-align: end; margin-top: 100px">
+          {% if user.is_authenticated %}
+          <li id="user">
+            <a
+              target="_self"
+              href="{% url 'profile' user.username %}"
+              style="color: red"
+              ><img src="/media/{{user.image}}" id="img" /> {{user.username}}</a
+            >
+          </li>
+          <li>
+            <a target="_self" href="/about"
+              ><i class="fa fa-info-circle" aria-hidden="true"></i> About Us</a
+            >
+          </li>
+          <li>
+            <a target="_self" href="/contact"
+              ><i class="fa fa-address-card" aria-hidden="true"></i> Contact
+              Us</a
+            >
+          </li>
+          <li>
+            <a target="_self" href="{% url 'logout' %}"
+              ><i class="fas fa-sign-in-alt" aria-hidden="true"></i> sign out</a
+            >
+          </li>
+          {% else %}
+
+          <li>
+            <a target="_self" href="/login"
+              ><i class="fas fa-sign-in-alt" aria-hidden="true"></i> sign in</a
+            >
+          </li>
+          <li>
+            <a target="_self" href="/about"
+              ><i class="fa fa-info-circle" aria-hidden="true"></i> About Us</a
+            >
+          </li>
+          <li>
+            <a target="_self" href="/contact"
+              ><i class="fa fa-address-card" aria-hidden="true"></i> Contact
+              Us</a
+            >
+          </li>
+          <li>
+            <a target="_self" href="/register"
+              ><i class="fa fa-home" aria-hidden="true"></i> sign up</a
+            >
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </section>
+              {% if user.is_authenticated %}
+  <body
+    class="h-screen overflow-hidden flex items-center justify-center"
+    style="
+      background-image: url(/static/images/excel.jpeg);
+      position: sticky;
+      background-size: cover;
+      background-repeat: no-repeat;
+    ">
+    <div
+      class="flex w-full h-screen items-center justify-center bg-grey-lighter"
+      id="a"
+      style="position: absolute; top: 100px">
+      <label
+        class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white"
+        id="label"
+        style="width: auto; height: 150px">
+        <svg
+          class="w-8 h-8"
+          fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20">
+          <path
+            d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+        </svg>
+        <span class="mt-2 text-base leading-normal" id="select"
+          >Select a file</span
+        >
+        <form method="post" action="analyze" enctype="multipart/form-data">
+          {%csrf_token%}
+          <input
+            type="file"
+            class="hidden"
+            accept=" .xlsx , .csv"
+            name="ex_file"
+            id="f1"
+            onchange="validateFile()" />
+          <br /><br />
+          <button id="btttn" disabled>upload file here</button>
+        </form>
+        <p id="errorMessage" style="color: red"></p>
+        <p id="errorMessages" style="display: none; color: red">
+          Please select a file.
+        </p>
+      </label>
+    </div>
+
+    <div class="steps" id="steps" style="position: absolute; top: 400px">
+      <button data-step="1" class="active">1</button>
+      <div></div>
+      <button data-step="2">2</button>
+      <div></div>
+      <button data-step="3">3</button>
+    </div>
+    <br /><br />
+    <div class="contents" id="contents" style="position: absolute; top: 550px">
+      <div class="content active" data-step="1">
+        <div class="content__box">
+          1-
+          <span style="margin-left: 150px"
+            >make sure that the first column called
+            <span style="color: red">"comments"</span> in your excel file</span
+          >
+        </div>
+      </div>
+      <div class="content" data-step="2">
+        <div class="content__box">
+          2-
+          <span style="margin-left: 150px"
+            >make sure that comments does not include
+            <span style="color: red">"nulls"</span> in your excel file</span
+          >
+        </div>
+      </div>
+      <div class="content" data-step="3">
+        <div class="content__box">
+          3-
+          <span style="margin-left: 230px"
+            >make sure that this file is only in
+            <span style="color: red">(English)</span></span
+          >
+        </div>
+      </div>
+    </div>
+    <script>
+      class StepsComponent {
+        constructor(stepsSelector, contentsSelector) {
+          this.current = 1;
+          this.stepsNode = document.querySelector(stepsSelector);
+          this.contentsNode = document.querySelector(contentsSelector);
+
+          this.totalSteps = this.stepsNode.children.length;
+
+          this.stepsNode.querySelectorAll("button").forEach((step) => {
+            step.addEventListener("click", (e) => {
+              const targetStep = parseInt(e.target.dataset.step);
+
+              this.contentsNode
+                .querySelectorAll(".content")
+                .forEach((content) => content.classList.remove("active"));
+              this.stepsNode
+                .querySelectorAll("button")
+                .forEach((content) => content.classList.remove("active"));
+
+              this.contentsNode
+                .querySelector(`.content[data-step="${targetStep}"]`)
+                .classList.add("active");
+              this.stepsNode
+                .querySelector(`button[data-step="${targetStep}"]`)
+                .classList.add("active");
+
+              this.stepsNode
+                .querySelectorAll("div")
+                .forEach((content) => content.classList.remove("active"));
+              if (targetStep - 1 > 0) {
+                const num = targetStep - 1;
+                for (let i = 1; i <= num; i++) {
+                  this.stepsNode
+                    .querySelector(`div:nth-of-type(${i})`)
+                    .classList.add("active");
+                }
+              }
+            });
+          });
+        }
+      }
+
+      new StepsComponent("#steps", "#contents");
+    </script>
+
+    <script>
+      const fileInput = document.getElementById("f1");
+      const fileName = document.getElementById("select");
+
+      fileInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        fileName.textContent = file.name;
+      });
+    </script>
+    <script>
+      function validateFile() {
+        const fileUpload = document.getElementById("f1");
+        const errorMessage = document.getElementById("errorMessage");
+        const allowedTypes = [
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "application/vnd.ms-excel",
+        ];
+        if (!allowedTypes.includes(fileUpload.files[0].type)) {
+          errorMessage.innerHTML =
+            "Error! Please upload an Excel file (.xlsx or .xls)";
+          fileUpload.value = "";
+        } else {
+          errorMessage.innerHTML = "";
+        }
+      }
+    </script>
+    <script>
+      const inputField = document.getElementById("f1");
+      const submitButton = document.getElementById("btttn");
+      const errorMessages = document.getElementById("errorMessages");
+
+      inputField.addEventListener("change", function () {
+        const file = inputField.files[0];
+        if (!file) {
+          submitButton.disabled = true;
+        } else if (inputField.value.length > 0) {
+          submitButton.disabled = false;
+          errorMessages.style.display = "none";
+        } else {
+          submitButton.disabled = true;
+          errorMessages.style.display = "block";
+        }
+      });
+    </script>
+      {% endif %}  
+    </body>
+</html>

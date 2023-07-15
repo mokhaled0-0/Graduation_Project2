@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Face Anlaysis</title>
+        <link rel="icon" href="{% static 'images/logo1.webp' %}">
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"></script>
+<link rel="stylesheet" href="{% static 'css/face.css' %}" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous" />
+     <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap"
+      rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<section class="navbar custom-navbar navbar-fixed-top" role="navigation" style="     padding-top: 3.2rem;padding-bottom: .5rem;">
+  <div class="header" style="height: 100px">
+    <div class="navbar-header">
+      <!-- lOGO TEXT HERE -->
+      <a href="/" style="margin-left: 25px"
+        ><img
+          src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/803/7812452803_7009b2ac-d992-4261-ad53-0a0bd9a49453.png?cb=1664135372"
+          alt=""
+      /></a>
+    </div>
+    <div class="nav-links" id="navLinks" style="margin-top: -170px">
+      <ul style="text-align: end; margin-top: 100px">
+        {% if user.is_authenticated %}
+        <li id="user">
+          <a
+            target="_self"
+            href="{% url 'profile' user.username %}"
+            style="color: red"
+            ><img src="/media/{{user.image}}" id="img" /> {{user.username}}</a
+          >
+        </li>
+        <li>
+          <a target="_self" href="/about"
+            ><i class="fa fa-info-circle" aria-hidden="true"></i> About Us</a
+          >
+        </li>
+        <li>
+          <a target="_self" href="/contact"
+            ><i class="fa fa-address-card" aria-hidden="true"></i> Contact Us</a
+          >
+        </li>
+        <li>
+          <a target="_self" href="{% url 'logout' %}"
+            ><i class="fas fa-sign-in-alt" aria-hidden="true"></i> sign out</a
+          >
+        </li>
+        {% else %}
+
+        <li>
+          <a target="_self" href="/login"
+            ><i class="fas fa-sign-in-alt" aria-hidden="true"></i> sign in</a
+          >
+        </li>
+        <li>
+          <a target="_self" href="/about"
+            ><i class="fa fa-info-circle" aria-hidden="true"></i> About Us</a
+          >
+        </li>
+        <li>
+          <a target="_self" href="/contact"
+            ><i class="fa fa-address-card" aria-hidden="true"></i> Contact Us</a
+          >
+        </li>
+        <li>
+          <a target="_self" href="/register"
+            ><i class="fa fa-home" aria-hidden="true"></i> sign up</a
+          >
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+  <!-- MENU LINKS -->
+</section>
+<br /><br /><br />
+    {% if user.is_authenticated %}
+    <div class="container" style="margin-top:250px">
+      <form action="#" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input-group">
+          <label for="{{form.image.id_for_label}}"></label>
+          {{form.image}}
+          <input
+            type="submit"
+            value="Display Image"
+            class="btn btn-outline-secondary" />
+        </div>
+      </form>
+<div class="credits" style="margin-left: 500px;margin-top:20px">
+        CopyRights©
+        <a class="credits-link" href="#">
+          <svg class="dribbble" viewBox="0 0 200 200">
+            <g stroke="#ffffff" fill="none">
+              <circle cx="100" cy="100" r="90" stroke-width="20"></circle>
+              <path d="M62.737004,13.7923523 C105.08055,51.0454853 135.018754,126.906957 141.768278,182.963345" stroke-width="20"></path>
+              <path d="M10.3787186,87.7261455 C41.7092324,90.9577894 125.850356,86.5317271 163.474536,38.7920951" stroke-width="20"></path>
+              <path d="M41.3611549,163.928627 C62.9207607,117.659048 137.020642,86.7137169 189.041451,107.858103" stroke-width="20"></path>
+            </g>
+          </svg>
+          TEAM 26
+        </a>
+      </div>
+    </div>
+    {% else %}
+          <div class="row container grid mx-auto" data-aos="fade-up">
+        <div class="col-6 tm-album-col">
+          <center>
+            <img
+              src="{% static 'insertion/img/alarm.jpg' %}"
+              alt="Image"
+              class="img-fluid"
+              style="height: 700px; width: 2000px; margin-right: -550px;margin-top:-40px;" />
+          </center>
+        </div>
+      </div>
+      {% endif %}
+  </body>
+</html>
+    <footer class="footer-distributed" style="    top: 100%;
+    display: block;
+    position: absolute;">
+      {% if user.is_authenticated %}
+      <div class="footer-left">
+        <h3>
+          Graduation<span style="font-size: 40px; font-weight: bold">
+            Project</span
+          >
+        </h3>
+
+        <p class="footer-links">
+          <a href="/" class="link-1">Home</a>
+
+          <a href="/sentiment/">Text</a>
+
+          <a href="/sentiment/tweet">Tweets</a>
+
+          <a href="/about">About Us</a>
+
+          <a href="/contact">Contact</a>
+        </p>
+        <br />
+        <div class="credits" style="margin-left: 20px">
+          CopyRights
+          <a class="credits-link" href="/">
+            <svg class="dribbble" viewBox="0 0 200 200" style="width: 10px">
+              <g stroke="#ffffff" fill="none">
+                <circle cx="100" cy="100" r="90" stroke-width="20"></circle>
+                <path
+                  d="M62.737004,13.7923523 C105.08055,51.0454853 135.018754,126.906957 141.768278,182.963345"
+                  stroke-width="20"></path>
+                <path
+                  d="M10.3787186,87.7261455 C41.7092324,90.9577894 125.850356,86.5317271 163.474536,38.7920951"
+                  stroke-width="20"></path>
+                <path
+                  d="M41.3611549,163.928627 C62.9207607,117.659048 137.020642,86.7137169 189.041451,107.858103"
+                  stroke-width="20"></path>
+              </g>
+            </svg>
+            TEAM 26
+            <span style="color: red; font-weight: bold; font-size: large"
+              >FCDS</span
+            >
+          </a>
+        </div>
+      </div>
+      {% else %}
+      <div class="footer-left">
+        <h3>
+          Graduation<span style="font-size: 40px; font-weight: bold">
+            Project</span
+          >
+        </h3>
+
+        <p class="footer-links">
+          <a href="/" class="link-1">Home</a>
+          <a href="/about">About Us</a>
+
+          <a href="/contact">Contact</a>
+        </p>
+        <br />
+        <div class="credits" style="margin-left: 20px">
+          CopyRights
+          <a class="credits-link" href="/">
+            <svg class="dribbble" viewBox="0 0 200 200" style="width: 10px">
+              <g stroke="#ffffff" fill="none">
+                <circle cx="100" cy="100" r="90" stroke-width="20"></circle>
+                <path
+                  d="M62.737004,13.7923523 C105.08055,51.0454853 135.018754,126.906957 141.768278,182.963345"
+                  stroke-width="20"></path>
+                <path
+                  d="M10.3787186,87.7261455 C41.7092324,90.9577894 125.850356,86.5317271 163.474536,38.7920951"
+                  stroke-width="20"></path>
+                <path
+                  d="M41.3611549,163.928627 C62.9207607,117.659048 137.020642,86.7137169 189.041451,107.858103"
+                  stroke-width="20"></path>
+              </g>
+            </svg>
+            TEAM 26
+            <span style="color: red; font-weight: bold; font-size: large"
+              >FCDS</span
+            >
+          </a>
+        </div>
+      </div>
+      {%endif %}
+      <div class="footer-center">
+        <div>
+          <i class="	fas fa-graduation-cap"></i>
+          <p><span>Team 26</p>
+        </div>
+        <br />
+        <div>
+          <i class="fas fa-school"></i>
+          <p>Faculty of computer and data science</p>
+        </div>
+        <br />
+        <div>
+          <i class="fa fa-envelope"></i>
+          <p>
+            <a href="mailto:fcds.team.26@gmail.com">Contact Us</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-right">
+        <p class="footer-company-about">
+          <br />
+          <span>About Our Idea</span>
+          our project aims to:
+        </p>
+        <p class="footer-company-about">
+          1- do sentiment analysis for current topics
+        </p>
+        <p class="footer-company-about">
+          2- do sentiment analysis for live tweets
+        </p>
+        <p class="footer-company-about">
+          3- do sentiment analysis for excel comment
+        </p>
+        <p class="footer-company-about">
+          4- do emotion analysis for faces 
+        </p>
+        <p class="footer-company-about">
+          5- Know more about mental disorder & chat with us & booking sets
+        </p>
+
+        <!-- SCRIPTS -->
+        <script src="{% static 'js/jquery.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+        <script src="{% static 'js/smoothscroll.js' %}"></script>
+        <script src="{% static 'js/custom.js' %}"></script>
+      </div>
+    </footer>
